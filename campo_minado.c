@@ -35,23 +35,11 @@ void renderizarCelula(int campo)
   case 2:
     printf(" @ |");
     break;
+  case 3:
+    printf(" V |");
+    break;
   default:
     printf("   |");
-  }
-}
-
-void renderizarTabuleiro(int campo, int i, int j)
-{
-  printf("    0   1   2   3   4   5   6   7   8   9  ");
-  printf("\n  -----------------------------------------\n");
-  for (i = 0; i < 10; i++)
-  {
-    printf("%d |", i);
-
-    for (j = 0; j < 10; j++)
-      renderizarCelula(campo);
-
-    printf("\n  -----------------------------------------\n");
   }
 }
 
@@ -84,25 +72,36 @@ int main(void)
       },
       i, j, linha, coluna, rodadas = 0;
 
-  system("clear");
+  // system("clear");
   printf("============= CAMPO MINADO =============\n\n");
 
-  renderizarTabuleiro(campo_jogador, i, j);
+  printf("    0   1   2   3   4   5   6   7   8   9  ");
+  printf("\n  -----------------------------------------\n");
+
+  for (i = 0; i < 10; i++)
+  {
+    printf("%d |", i);
+
+    for (j = 0; j < 10; j++)
+      renderizarCelula(campo_jogador[i][j]);
+
+    printf("\n  -----------------------------------------\n");
+  }
+
+  printf("\nVoce nao pode jogar na mesma casa duas vezes!\n");
 
   while (1)
   {
     if (rodadas > 0)
       printf("\nVoce ja sobreviveu por %d rodadas!\n\n", rodadas);
 
-    printf("\nDigite a linha a jogar: \n");
+    printf("\nDigite as coordenadas (linha coluna) a jogar: \n");
     scanf("\n %d", &linha);
-    printf("Digite a coluna a jogar: \n");
     scanf("\n %d", &coluna);
     system("clear");
 
     if (campo_jogador[linha][coluna] == 2)
     {
-      // renderizarTabuleiro(campo_jogador, i, j);
       printf("    0   1   2   3   4   5   6   7   8   9  ");
       printf("\n  -----------------------------------------\n");
 
@@ -153,8 +152,6 @@ int main(void)
     else
     {
       campo_jogador[linha][coluna] = 2;
-
-      // renderizarTabuleiro(campo_jogador, i, j);
 
       printf("    0   1   2   3   4   5   6   7   8   9  ");
       printf("\n  -----------------------------------------\n");
