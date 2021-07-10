@@ -17,7 +17,7 @@ Trabalho da disciplina COM110 do curso de Sistemas de Informação - UNIFEI
 
 > O projeto pode ser rodado por meio do [repl.it](https://replit.com/@joevtap/campominadocom110)
 
-### Para rodar o projeto em uma máquina local é preciso ter atenção aos seguintes requerimentos
+### Para rodar o projeto em uma máquina local é preciso ter atenção aos seguintes requisitos
 
 - Sistema operacional **Linux**
 - Compilador GCC
