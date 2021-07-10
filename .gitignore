@@ -1,3 +1,4 @@
 .out
 .pdf
 */*.pdf
+/doc_files

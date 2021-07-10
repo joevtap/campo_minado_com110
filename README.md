@@ -1,6 +1,6 @@
 # Campo minado em C
 
-> Trabalho da disciplina COM110 do curso de Sistemas de Informação - UNIFEI
+Trabalho da disciplina COM110 do curso de Sistemas de Informação - UNIFEI
 
 ## Índice:
 
