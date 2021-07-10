@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /*
   CAMPO MINADO {
@@ -11,9 +12,11 @@
     }
 
     Logica {
-      Serao duas matrizes, uma com as coordenadas das bombas e uma que sera apresentada para o jogador e que armazena as jogadas dele
+      Serao duas matrizes, uma com as coordenadas das bombas e uma que sera 
+      apresentada para o jogador e que armazena as jogadas dele
 
-      Onde for 0 eh onde nao tem bomba, onde for 1 eh onde tem bomba, onde for 2 eh onde o jogador ja passou
+      Onde for 0 eh onde nao tem bomba, onde for 1 eh onde tem bomba,
+      onde for 2 eh onde o jogador ja passou
     }
   }
 
@@ -21,6 +24,24 @@
 
   }
 */
+
+void posicionarBombas(int matriz[10][10]) {
+  int k, i, j;
+  
+
+  for (k = 0; k < 10; k++) {
+    srand(time(NULL));
+
+    i = rand() % 10;
+    j = rand() % 10;
+
+    if (matriz[i][j] == 1) {
+      k--;
+    }
+    
+    matriz[i][j] = 1;
+  }
+}
 
 void renderizarCelula(int campo)
 {
@@ -34,9 +55,6 @@ void renderizarCelula(int campo)
     break;
   case 2:
     printf(" @ |");
-    break;
-  case 3:
-    printf(" V |");
     break;
   default:
     printf("   |");
@@ -60,21 +78,26 @@ int main(void)
   },
       campo_bombas[10][10] = {
           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-          {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
       },
       i, j, linha, coluna, rodadas = 0;
 
-  // system("clear");
+  system("clear");
   printf("============= CAMPO MINADO =============\n\n");
 
+  printf("\nPosicionando bombas...\n\n");
+
+  posicionarBombas(campo_bombas);
+
+  system("clear");
   printf("    0   1   2   3   4   5   6   7   8   9  ");
   printf("\n  -----------------------------------------\n");
 
@@ -88,16 +111,20 @@ int main(void)
     printf("\n  -----------------------------------------\n");
   }
 
-  printf("\nVoce nao pode jogar na mesma casa duas vezes!\n");
-
   while (1)
   {
     if (rodadas > 0)
       printf("\nVoce ja sobreviveu por %d rodadas!\n\n", rodadas);
 
-    printf("\nDigite as coordenadas (linha coluna) a jogar: \n");
-    scanf("\n %d", &linha);
-    scanf("\n %d", &coluna);
+    
+    //Entrada de dados
+
+    do {
+      printf("\nDigite as coordenadas (linha coluna) a jogar: \n");
+      scanf("\n %d", &linha);
+      scanf("\n %d", &coluna);
+    } while(linha > 9 || coluna > 9 || linha < 0 || coluna < 0);
+
     system("clear");
 
     if (campo_jogador[linha][coluna] == 2)
