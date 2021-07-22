@@ -11,7 +11,7 @@ Trabalho da disciplina COM110 do curso de Sistemas de Informação - UNIFEI
 
 - Joel Vítor Torres
 - Samuel Canellas Ferreira
-- Ryan Augusto Ribeiro Silva
+- [Ryan Augusto Ribeiro Silva](https://github.com/RyanFoward)
 
 ## Como rodar o projeto
 
