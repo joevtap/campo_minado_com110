@@ -1,201 +1,94 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+/* JOGO CAMPO MINADO
 
-/*
-  CAMPO MINADO {
-    Regras {
-      - Um campo 10 x 10 com 5 bombas escondidas
-      - O jogador escolhe uma coordenada pra jogar
-      - Se a coordenada corresponder a uma bomba ele perde
-      - Senao ele pode jogar novamente
-    }
+# Checklist
 
-    Logica {
-      Serao duas matrizes, uma com as coordenadas das bombas e uma que sera 
-      apresentada para o jogador e que armazena as jogadas dele
+- [*] Setup do projeto para a versao final
+  - [*] Estrutura de pastas
+  - [*] Estrutura do codigo
+  - [*] Comentarios e passo a passo do desenvolvimento
+  - [*] Checklist a respeito do desenvolvimento
+- [*] Struct celula
+- [*] Matriz campo
+- [ ] Menu
+- [*] Iniciar campo
+- [ ] Inserir minas
+- [ ] Contar minas vizinhas
+- [ ] Jogar
+  - [ ] Mostrar campo
+  - [ ] Abrir celula
+  - [ ] Verificar se ganhou
+  - [ ] Verificar se coordenada e valida
+  - [ ] Incrementar o score
+- [ ] Salvar score e encerrar o jogo
 
-      Onde for 0 eh onde nao tem bomba, onde for 1 eh onde tem bomba,
-      onde for 2 eh onde o jogador ja passou
-    }
-  }
-
-  TODO {
-
-  }
 */
 
-void posicionarBombas(int matriz[10][10]) {
-  int k, i, j;
-  
+// __________________________________________________________ //
 
-  for (k = 0; k < 10; k++) {
-    srand(time(NULL));
+#include <stdio.h>
+#include <stdlib.h>
+// #include "modules/save.h"
+// #include "modules/menu.h"
 
-    i = rand() % 10;
-    j = rand() % 10;
+// Struct celula
 
-    if (matriz[i][j] == 1) {
-      k--;
-    }
-    
-    matriz[i][j] = 1;
-  }
-}
-
-void renderizarCelula(int campo)
+typedef struct
 {
-  switch (campo)
-  {
-  case 0:
-    printf("   |");
-    break;
-  case 1:
-    printf(" * |");
-    break;
-  case 2:
-    printf(" @ |");
-    break;
-  default:
-    printf("   |");
-  }
+  int isMine;     // E uma mina?
+  int isOpen;     // Celula esta aberta?
+  int neighbours; // Quantos vizinhos tem minas?
+} Cell;
+
+// Variaveis globais
+
+int tam = 10;       // Tamanho do campo
+Cell field[10][10]; // Matriz campo
+
+void start_game()
+{
+  for (int l = 0; l < tam; l++)
+    for (int c = 0; c < tam; c++)
+    {
+      field[l][c].isMine = 0;
+      field[l][c].isOpen = 0;
+      field[l][c].neighbours = 0;
+    }
 }
 
 int main(void)
 {
 
-  int campo_jogador[10][10] = {
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-  },
-      campo_bombas[10][10] = {
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      },
-      i, j, linha, coluna, rodadas = 0;
+  // Menu (modulo)
+  // open_menu();
 
-  system("clear");
-  printf("============= CAMPO MINADO =============\n\n");
+  // Iniciar matriz do campo
+  start_game();
 
-  printf("\nPosicionando bombas...\n\n");
+  // Inserir N minas
+  // insert_mine();
 
-  posicionarBombas(campo_bombas);
+  // Contar minas vizinhas da celula aberta
+  // count_neighbours();
 
-  system("clear");
-  printf("    0   1   2   3   4   5   6   7   8   9  ");
-  printf("\n  -----------------------------------------\n");
+  // Jogar
+  // play();
+  //   Mostrar campo
+  //   print_field();
 
-  for (i = 0; i < 10; i++)
-  {
-    printf("%d |", i);
+  //   Abrir celula
+  //   open_cell();
 
-    for (j = 0; j < 10; j++)
-      renderizarCelula(campo_jogador[i][j]);
+  //   Verificar se ganhou
+  //   have_won();
 
-    printf("\n  -----------------------------------------\n");
-  }
+  //   Verificar se coordenada selecionada eh valida
+  //   is_coor_valid();
 
-  while (1)
-  {
-    if (rodadas > 0)
-      printf("\nVoce ja sobreviveu por %d rodadas!\n\n", rodadas);
+  //   Incrementar score
+  //   score_plus_one();
 
-    
-    //Entrada de dados
-
-    do {
-      printf("\nDigite as coordenadas (linha coluna) a jogar: \n");
-      scanf("\n %d", &linha);
-      scanf("\n %d", &coluna);
-    } while(linha > 9 || coluna > 9 || linha < 0 || coluna < 0);
-
-    system("clear");
-
-    if (campo_jogador[linha][coluna] == 2)
-    {
-      printf("    0   1   2   3   4   5   6   7   8   9  ");
-      printf("\n  -----------------------------------------\n");
-
-      for (i = 0; i < 10; i++)
-      {
-        printf("%d |", i);
-
-        for (j = 0; j < 10; j++)
-          renderizarCelula(campo_jogador[i][j]);
-
-        printf("\n  -----------------------------------------\n");
-      }
-
-      printf("\nVoce nao pode jogar na mesma casa duas vezes!\n");
-      continue;
-    }
-
-    if (campo_bombas[linha][coluna] == 1)
-    {
-      printf("    0   1   2   3   4   5   6   7   8   9  ");
-      printf("\n  -----------------------------------------\n");
-
-      for (i = 0; i < 10; i++)
-      {
-        printf("%d |", i);
-        for (j = 0; j < 10; j++)
-        {
-          if (i == linha && j == coluna)
-            printf(" * |");
-
-          else
-            renderizarCelula(campo_jogador[i][j]);
-        }
-        printf("\n  -----------------------------------------\n");
-      }
-
-      if (rodadas > 0 && rodadas != 1)
-        printf("\nVoce perdeu depois de %d rodadas!\n", rodadas);
-
-      else if (rodadas == 1)
-        printf("\nVoce perdeu depois de 1 rodada!\n");
-
-      else
-        printf("\nOops...\nAzar, perdeu na primeira rodada...\n");
-
-      break;
-    }
-    else
-    {
-      campo_jogador[linha][coluna] = 2;
-
-      printf("    0   1   2   3   4   5   6   7   8   9  ");
-      printf("\n  -----------------------------------------\n");
-
-      for (i = 0; i < 10; i++)
-      {
-        printf("%d |", i);
-
-        for (j = 0; j < 10; j++)
-          renderizarCelula(campo_jogador[i][j]);
-
-        printf("\n  -----------------------------------------\n");
-      }
-      rodadas++;
-      continue;
-    }
-  }
+  // Salvar score em arquivo e encerrar o jogo (modulo)
+  // end_game();
 
   return 0;
 }
