@@ -23,10 +23,11 @@
 
 */
 
-// __________________________________________________________ //
+// ____________________ //
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 // #include "modules/save.h"
 // #include "modules/menu.h"
 
@@ -41,18 +42,29 @@ typedef struct
 
 // Variaveis globais
 
-int tam = 10;       // Tamanho do campo
+int tam = 10, l, c; // Tamanho do campo, variaveis para iterar
 Cell field[10][10]; // Matriz campo
 
 void start_game()
 {
-  for (int l = 0; l < tam; l++)
-    for (int c = 0; c < tam; c++)
+  for (l = 0; l < tam; l++)
+    for (c = 0; c < tam; c++)
     {
       field[l][c].isMine = 0;
       field[l][c].isOpen = 0;
       field[l][c].neighbours = 0;
     }
+}
+
+void insert_mines()
+{
+  srand(time(NULL));
+  for (int i = 0; i < 8; i++)
+  {
+    l = rand() % 10;
+    c = rand() % 10;
+    field[l][c].isMine = 1;
+  }
 }
 
 int main(void)
@@ -61,11 +73,14 @@ int main(void)
   // Menu (modulo)
   // open_menu();
 
+  //Escolha da dificuldade
+  //choice_dif();
+
   // Iniciar matriz do campo
   start_game();
 
   // Inserir N minas
-  // insert_mine();
+  insert_mines();
 
   // Contar minas vizinhas da celula aberta
   // count_neighbours();
