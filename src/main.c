@@ -67,6 +67,30 @@ void insert_mines()
   }
 }
 
+void count_neighbours()
+{
+  int neighbours;
+  for(l=0; l<10; l++){
+    for(c=0; c<10; c++){
+      if((field[l][c+1].isMine) == 1){
+        field[l][c].neighbours += 1;
+      }
+      if ((field[l][c-1].isMine) == 1)
+      {
+        field[l][c].neighbours += 1;
+      }
+      if ((field[l+1][c].isMine) == 1)
+      {
+        field[l][c].neighbours += 1;
+      }
+      if ((field[l-1][c].isMine) == 1)
+      {
+        field[l][c].neighbours += 1;
+      }
+    }
+  }
+}
+
 int main(void)
 {
 
@@ -83,8 +107,7 @@ int main(void)
   insert_mines();
 
   // Contar minas vizinhas da celula aberta
-  // count_neighbours();
-
+  count_neighbours();
   // Jogar
   // play();
   //   Mostrar campo
@@ -105,5 +128,12 @@ int main(void)
   // Salvar score em arquivo e encerrar o jogo (modulo)
   // end_game();
 
+  //Teste
+  // for(l=0; l<10; l++){
+  //   for(c=0; c<10; c++){
+  //     printf("%d ", field[l][c].neighbours);
+  //   }
+  //   printf("\n");
+  // }
   return 0;
 }
