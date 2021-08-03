@@ -122,6 +122,14 @@ void have_won()
   } 
 }
 
+void is_coor_valid(int l, int c)
+{
+  if ((l<0) || (l>10) || (c<0) || (c>10))
+  {
+    return 0;
+  }
+  return 1;
+}
 
 // void score_plus_one()
 // {
