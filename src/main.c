@@ -121,13 +121,11 @@ void have_won()
   }
 }
 
-// void score_plus_one()
-// {
-//   if (choosed[l][c] == (field[l][c].isMine == 0))
-//   {
-//     score += 10;
-//   }
-// }
+void score_plus_one(int l, int c)
+{
+  if ((field[l][c].isMine == 0))
+     score += 10;
+}
 
 int main(void)
 {
@@ -155,10 +153,10 @@ int main(void)
   have_won();
 
   //   Verificar se coordenada selecionada eh valida
-  //is_coor_invalid();
+  is_coor_valid(l, c);
 
   //   Incrementar score
-  //   score_plus_one();
+  score_plus_one(l, c);
 
   // Salvar score em arquivo e encerrar o jogo (modulo)
   // end_game();
