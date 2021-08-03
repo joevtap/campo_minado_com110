@@ -33,17 +33,27 @@
 
 // Struct celula
 
-typedef struct
+struct Cell
 {
   int isMine;       // E uma mina?
   int isOpen;       // Celula esta aberta?
   int neighbours;   // Quantos vizinhos tem minas?
-} Cell;
+};
+
+// Struct jogador
+
+struct Player
+{
+  char *name;
+  int score;
+};
 
 // Variaveis globais
 
-int tam = 10, l, c, score; // Tamanho do campo, variaveis para iterar
-Cell field[10][10];        // Matriz campo
+int tam = 10;
+int l, c, score;
+int n_players = 3;
+struct Cell field[10][10]; // Matriz campo
 
 void start_game()
 {
@@ -129,6 +139,7 @@ void score_plus_one(int l, int c)
 
 int main(void)
 {
+  struct Player players[n_players];
 
   // Menu (modulo)
   // open_menu();
@@ -150,13 +161,13 @@ int main(void)
   //   open_cell();
 
   //   Verificar se ganhou
-  have_won();
+  // have_won();
 
   //   Verificar se coordenada selecionada eh valida
-  is_coor_valid(l, c);
+  // is_coor_valid(l, c);
 
   //   Incrementar score
-  score_plus_one(l, c);
+  // score_plus_one(l, c);
 
   // Salvar score em arquivo e encerrar o jogo (modulo)
   // end_game();
