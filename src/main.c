@@ -35,17 +35,15 @@
 
 typedef struct
 {
-  int isMine;     // E uma mina?
-  int isOpen;     // Celula esta aberta?
-  int neighbours; // Quantos vizinhos tem minas?
-  int coor_invalid; //É uma coordenada inválida?
+  int isMine;       // E uma mina?
+  int isOpen;       // Celula esta aberta?
+  int neighbours;   // Quantos vizinhos tem minas?
 } Cell;
 
 // Variaveis globais
 
 int tam = 10, l, c, score; // Tamanho do campo, variaveis para iterar
-Cell field[10][10]; // Matriz campo
-
+Cell field[10][10];        // Matriz campo
 
 void start_game()
 {
@@ -58,77 +56,69 @@ void start_game()
     }
 }
 
-void insert_mines()
+void insert_mines(int number_of_bombs)
 {
   srand(time(NULL));
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < number_of_bombs; i++)
   {
-    l = rand() % 10;
-    c = rand() % 10;
-    field[l][c].isMine = 1;
+    l = rand() % tam;
+    c = rand() % tam;
+    if (field[l][c].isMine == 0)
+      field[l][c].isMine = 1;
+    else
+      i--;
   }
+}
+
+int is_coor_valid(int l, int c)
+{
+  if (l >= 0 && c >= 0 && l < tam && c < tam)
+    return 1;
+  return 0;
+}
+
+int mines_in_neighbourhood_of(int l, int c)
+{
+  int mines_in_neighbourhood = 0;
+
+  // Celulas adjacentes
+  if (is_coor_valid(l - 1, c) && (field[l - 1][c].isMine == 1))
+    mines_in_neighbourhood++;
+  if (is_coor_valid(l + 1, c) && (field[l + 1][c].isMine == 1))
+    mines_in_neighbourhood++;
+  if (is_coor_valid(l, c - 1) && (field[l][c - 1].isMine == 1))
+    mines_in_neighbourhood++;
+  if (is_coor_valid(l, c + 1) && (field[l][c + 1].isMine == 1))
+    mines_in_neighbourhood++;
+
+  // Celulas diagonais
+  if (is_coor_valid(l + 1, c + 1) && (field[l + 1][c + 1].isMine == 1))
+    mines_in_neighbourhood++;
+  if (is_coor_valid(l - 1, c - 1) && (field[l - 1][c - 1].isMine == 1))
+    mines_in_neighbourhood++;
+  if (is_coor_valid(l + 1, c - 1) && (field[l + 1][c - 1].isMine == 1))
+    mines_in_neighbourhood++;
+  if (is_coor_valid(l - 1, c + 1) && (field[l - 1][c + 1].isMine == 1))
+    mines_in_neighbourhood++;
+
+  return mines_in_neighbourhood;
 }
 
 void count_neighbours()
 {
-  int neighbours;
-  for(l=0; l<10; l++){
-    for(c=0; c<10; c++){
-
-      if ((c != 9) && (field[l][c+1].isMine) == 1)
-      {
-        field[l][c].neighbours += 1;
-      }
-      if ((c != 0) && (field[l][c-1].isMine == 1))
-      {
-        field[l][c].neighbours += 1;
-      }
-      if ((l != 9) && (field[l+1][c].isMine == 1))
-      {
-        field[l][c].neighbours += 1;
-      }
-      if ((l != 0) && (field[l-1][c].isMine == 1)) 
-      {
-        field[l][c].neighbours += 1;
-      }
-      if ((c != 9) && (l != 9) && (field[l+1][c+1].isMine) == 1)
-      {
-        field[l][c].neighbours += 1;
-      }
-      if ((c != 0) && (l != 0) && (field[l-1][c-1].isMine) == 1)
-      {
-        field[l][c].neighbours += 1;
-      }
-      if ((c != 0) && (l != 9) && (field[l+1][c-1].isMine) == 1)
-      {
-        field[l][c].neighbours += 1;
-      }
-      if ((c != 9) && (l != 0) && (field[l-1][c+1].isMine) == 1)
-      {
-        field[l][c].neighbours += 1;
-      }
-      
-    }
-  }
+  for (l = 0; l < tam; l++)
+    for (c = 0; c < tam; c++)
+      field[l][c].neighbours = mines_in_neighbourhood_of(l, c);
 }
 
 void have_won()
 {
-  if (score==920)
+  if (score == 920)
   {
     printf(" Você obteve a pontuação máxima! Parabéns!!");
     //Falta anexar a pontuação ao nome do jogador
     return;
-  } 
-}
-
-void is_coor_valid(int l, int c)
-{
-  if ((l<0) || (l>10) || (c<0) || (c>10))
-  {
-    return 0;
   }
-  return 1;
 }
 
 // void score_plus_one()
@@ -149,7 +139,7 @@ int main(void)
   start_game();
 
   // Inserir N minas
-  insert_mines();
+  insert_mines(8);
 
   // Contar minas vizinhas da celula aberta
   count_neighbours();
@@ -174,8 +164,10 @@ int main(void)
   // end_game();
 
   //Teste neighbours
-  for(l=0; l<10; l++){
-    for(c=0; c<10; c++){
+  for (l = 0; l < 10; l++)
+  {
+    for (c = 0; c < 10; c++)
+    {
       printf("%d  ", field[l][c].neighbours);
     }
     printf("\n");
@@ -184,8 +176,10 @@ int main(void)
   printf("\n");
 
   //Teste bombas
-  for(l=0; l<10; l++){
-    for(c=0; c<10; c++){
+  for (l = 0; l < 10; l++)
+  {
+    for (c = 0; c < 10; c++)
+    {
       printf("%d  ", field[l][c].isMine);
     }
     printf("\n");
