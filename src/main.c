@@ -38,12 +38,14 @@ typedef struct
   int isMine;     // E uma mina?
   int isOpen;     // Celula esta aberta?
   int neighbours; // Quantos vizinhos tem minas?
+  int coor_invalid; //É uma coordenada inválida?
 } Cell;
 
 // Variaveis globais
 
-int tam = 10, l, c; // Tamanho do campo, variaveis para iterar
+int tam = 10, l, c, score; // Tamanho do campo, variaveis para iterar
 Cell field[10][10]; // Matriz campo
+
 
 void start_game()
 {
@@ -72,33 +74,68 @@ void count_neighbours()
   int neighbours;
   for(l=0; l<10; l++){
     for(c=0; c<10; c++){
-      if((field[l][c+1].isMine) == 1){
-        field[l][c].neighbours += 1;
-      }
-      if ((field[l][c-1].isMine) == 1)
+
+      if ((c != 9) && (field[l][c+1].isMine) == 1)
       {
         field[l][c].neighbours += 1;
       }
-      if ((field[l+1][c].isMine) == 1)
+      if ((c != 0) && (field[l][c-1].isMine == 1))
       {
         field[l][c].neighbours += 1;
       }
-      if ((field[l-1][c].isMine) == 1)
+      if ((l != 9) && (field[l+1][c].isMine == 1))
       {
         field[l][c].neighbours += 1;
       }
+      if ((l != 0) && (field[l-1][c].isMine == 1)) 
+      {
+        field[l][c].neighbours += 1;
+      }
+      if ((c != 9) && (l != 9) && (field[l+1][c+1].isMine) == 1)
+      {
+        field[l][c].neighbours += 1;
+      }
+      if ((c != 0) && (l != 0) && (field[l-1][c-1].isMine) == 1)
+      {
+        field[l][c].neighbours += 1;
+      }
+      if ((c != 0) && (l != 9) && (field[l+1][c-1].isMine) == 1)
+      {
+        field[l][c].neighbours += 1;
+      }
+      if ((c != 9) && (l != 0) && (field[l-1][c+1].isMine) == 1)
+      {
+        field[l][c].neighbours += 1;
+      }
+      
     }
   }
 }
+
+void have_won()
+{
+  if (score==920)
+  {
+    printf(" Você obteve a pontuação máxima! Parabéns!!");
+    //Falta anexar a pontuação ao nome do jogador
+    return;
+  } 
+}
+
+
+// void score_plus_one()
+// {
+//   if (choosed[l][c] == (field[l][c].isMine == 0))
+//   {
+//     score += 10;
+//   }
+// }
 
 int main(void)
 {
 
   // Menu (modulo)
   // open_menu();
-
-  //Escolha da dificuldade
-  //choice_dif();
 
   // Iniciar matriz do campo
   start_game();
@@ -117,10 +154,10 @@ int main(void)
   //   open_cell();
 
   //   Verificar se ganhou
-  //   have_won();
+  have_won();
 
   //   Verificar se coordenada selecionada eh valida
-  //   is_coor_valid();
+  //is_coor_invalid();
 
   //   Incrementar score
   //   score_plus_one();
@@ -128,12 +165,22 @@ int main(void)
   // Salvar score em arquivo e encerrar o jogo (modulo)
   // end_game();
 
-  //Teste
-  // for(l=0; l<10; l++){
-  //   for(c=0; c<10; c++){
-  //     printf("%d ", field[l][c].neighbours);
-  //   }
-  //   printf("\n");
-  // }
+  //Teste neighbours
+  for(l=0; l<10; l++){
+    for(c=0; c<10; c++){
+      printf("%d  ", field[l][c].neighbours);
+    }
+    printf("\n");
+  }
+
+  printf("\n");
+
+  //Teste bombas
+  for(l=0; l<10; l++){
+    for(c=0; c<10; c++){
+      printf("%d  ", field[l][c].isMine);
+    }
+    printf("\n");
+  }
   return 0;
 }
