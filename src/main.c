@@ -12,13 +12,13 @@
 - [ ] Menu
 - [*] Iniciar campo
 - [ ] Inserir minas
-- [ ] Contar minas vizinhas
+- [*] Contar minas vizinhas
 - [ ] Jogar
   - [ ] Mostrar campo
-  - [ ] Abrir celula
-  - [ ] Verificar se ganhou
-  - [ ] Verificar se coordenada e valida
-  - [ ] Incrementar o score
+  - [*] Abrir celula
+  - [*] Verificar se ganhou
+  - [*] Verificar se coordenada e valida
+  - [*] Incrementar o score
 - [ ] Salvar score e encerrar o jogo
 
 */
@@ -121,6 +121,46 @@ void count_neighbours()
       field[l][c].neighbours = mines_in_neighbourhood_of(l, c);
 }
 
+
+void open_cell(int l, int c)
+{
+  //Checa se a cordenada é válida e se o campo ainda está disponível para ser aberto
+  if (is_coor_valid(l, c) ==1 && field[l][c].isOpen == 0)
+  {
+  //Abre campos vizinhos caso não contenham bomba
+  if (field[l][c].neighbours==0)
+  {
+    //Abre células adjacentes
+    if (field[l-1][c].isMine == 0)
+    open_cell(l-1, c);
+    
+    if (field[l+1][c].isMine == 0)
+    open_cell(l+1, c);
+
+    if (field[l][c-1].isMine == 0)
+    open_cell(l, c-1);
+
+    if (field[l][c+1].isMine == 0)
+    open_cell(l, c+1);
+
+    //Abre células diagonais
+    if (field[l+1][c+1].isMine == 0)
+    open_cell(l+1, c+1);
+
+    if (field[l-1][c-1].isMine == 0)
+    open_cell(l-1, c-1);
+
+    if (field[l-1][c+1].isMine == 0)
+    open_cell(l-1, c+1);
+
+    if (field[l+1][c-1].isMine == 0)
+    open_cell(l+1, c-1);
+  }
+  }
+  //Agora o campo está aberto
+  field[l][c].isOpen==1;
+}
+
 void have_won()
 {
   if (score == 920)
@@ -158,7 +198,7 @@ int main(void)
   //   print_field();
 
   //   Abrir celula
-  //   open_cell();
+     //open_cell(l, c);
 
   //   Verificar se ganhou
   // have_won();
