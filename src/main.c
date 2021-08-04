@@ -121,6 +121,22 @@ void count_neighbours()
       field[l][c].neighbours = mines_in_neighbourhood_of(l, c);
 }
 
+void play()
+{
+  do
+  {
+    printf(" Digite a linha e a coluna da casa que deseja abrir: ");
+    scanf("%d ", &l);
+    scanf("%d ", &c);
+
+    if (is_coor_valid(l, c)==0)
+    printf(" Acho que essa célula não existe... tente outra!");
+
+    if (field[l][c].isOpen==1)
+    printf(" Essa casa já foi aberta, que tal escolher uma nova? ");    
+    
+  } while (is_coor_valid(l, c)==0 && field[l][c].isOpen==1);
+}
 
 void open_cell(int l, int c)
 {
@@ -128,34 +144,34 @@ void open_cell(int l, int c)
   if (is_coor_valid(l, c) ==1 && field[l][c].isOpen == 0)
   {
   //Abre campos vizinhos caso não contenham bomba
-  if (field[l][c].neighbours==0)
-  {
-    //Abre células adjacentes
-    if (field[l-1][c].isMine == 0)
-    open_cell(l-1, c);
-    
-    if (field[l+1][c].isMine == 0)
-    open_cell(l+1, c);
+    if (field[l][c].neighbours==0)
+    {
+      //Abre células adjacentes
+      if (field[l-1][c].isMine == 0)
+      open_cell(l-1, c);
+      
+      if (field[l+1][c].isMine == 0)
+      open_cell(l+1, c);
 
-    if (field[l][c-1].isMine == 0)
-    open_cell(l, c-1);
+      if (field[l][c-1].isMine == 0)
+      open_cell(l, c-1);
 
-    if (field[l][c+1].isMine == 0)
-    open_cell(l, c+1);
+      if (field[l][c+1].isMine == 0)
+      open_cell(l, c+1);
 
-    //Abre células diagonais
-    if (field[l+1][c+1].isMine == 0)
-    open_cell(l+1, c+1);
+      //Abre células diagonais
+      if (field[l+1][c+1].isMine == 0)
+      open_cell(l+1, c+1);
 
-    if (field[l-1][c-1].isMine == 0)
-    open_cell(l-1, c-1);
+      if (field[l-1][c-1].isMine == 0)
+      open_cell(l-1, c-1);
 
-    if (field[l-1][c+1].isMine == 0)
-    open_cell(l-1, c+1);
+      if (field[l-1][c+1].isMine == 0)
+      open_cell(l-1, c+1);
 
-    if (field[l+1][c-1].isMine == 0)
-    open_cell(l+1, c-1);
-  }
+      if (field[l+1][c-1].isMine == 0)
+      open_cell(l+1, c-1);
+    }
   }
   //Agora o campo está aberto
   field[l][c].isOpen==1;
