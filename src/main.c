@@ -193,8 +193,10 @@ void play()
       printf("\nDigite as coodernadas (linha e coluna)\n");
       scanf("%d%d", &line, &column);
 
-      if (is_coor_valid(line, column) == 0 || field[line][column].isOpen == 1)
-        printf("\nCoordenada invalida, digite novamente\n");
+      if (is_coor_valid(line, column) == 0)
+        printf("\nCoordenada invalida, digite novamente...\n");
+      if (field[line][column].isOpen == 1)
+        printf(" Você já escolheu esse campo! tente outro...")
     } while (is_coor_valid(line, column) == 0 || field[line][column].isOpen == 1);
 
     open_cell(line, column);
@@ -219,7 +221,7 @@ int main(void)
   start_game();
 
   // Inserir N minas
-  insert_mines(8);
+  insert_mines(10);
 
   // Contar minas vizinhas da celula aberta
   count_neighbours();
