@@ -11,14 +11,14 @@
 - [*] Matriz campo
 - [ ] Menu
 - [*] Iniciar campo
-- [ ] Inserir minas
+- [*] Inserir minas
 - [*] Contar minas vizinhas
 - [ ] Jogar
-  - [ ] Mostrar campo
+  - [*] Mostrar campo
   - [*] Abrir celula
   - [*] Verificar se ganhou
   - [*] Verificar se coordenada e valida
-  - [*] Incrementar o score
+  - [ ] Incrementar o score
 - [ ] Salvar score e encerrar o jogo
 
 */
@@ -35,9 +35,9 @@
 
 struct Cell
 {
-  int isMine;       // E uma mina?
-  int isOpen;       // Celula esta aberta?
-  int neighbours;   // Quantos vizinhos tem minas?
+  int isMine;     // E uma mina?
+  int isOpen;     // Celula esta aberta?
+  int neighbours; // Quantos vizinhos tem minas?
 };
 
 // Struct jogador
@@ -121,76 +121,91 @@ void count_neighbours()
       field[l][c].neighbours = mines_in_neighbourhood_of(l, c);
 }
 
-void play()
+void print_field()
 {
-  do
+  printf("\n\n   ");
+  for (l = 0; l < tam; l++)
   {
-    printf(" Digite a linha e a coluna da casa que deseja abrir: ");
-    scanf("%d ", &l);
-    scanf("%d ", &c);
-
-    if (is_coor_valid(l, c)==0)
-    printf(" Acho que essa célula não existe... tente outra!");
-
-    if (field[l][c].isOpen==1)
-    printf(" Essa casa já foi aberta, que tal escolher uma nova? ");    
-    
-  } while (is_coor_valid(l, c)==0 && field[l][c].isOpen==1);
+    printf("  %d ", l); // colunas
+  }
+  printf("\n   -----------------------------------------\n");
+  for (int l = 0; l < tam; l++)
+  {
+    printf("%d  |", l);
+    for (int c = 0; c < tam; c++)
+    {
+      if (field[l][c].isOpen)
+      {
+        if (field[l][c].isMine)
+          printf(" * ");
+        else
+          printf(" %d ", field[l][c].neighbours);
+      }
+      else
+        printf("   ");
+      printf("|");
+    }
+    printf("\n   -----------------------------------------\n");
+  }
 }
 
 void open_cell(int l, int c)
 {
-  //Checa se a cordenada é válida e se o campo ainda está disponível para ser aberto
-  if (is_coor_valid(l, c) ==1 && field[l][c].isOpen == 0)
+  if (is_coor_valid(l, c) && field[l][c].isOpen == 0)
   {
-  //Abre campos vizinhos caso não contenham bomba
-    if (field[l][c].neighbours==0)
+    field[l][c].isOpen = 1;
+
+    if (field[l][c].neighbours == 0)
     {
-      //Abre células adjacentes
-      if (field[l-1][c].isMine == 0)
-      open_cell(l-1, c);
-      
-      if (field[l+1][c].isMine == 0)
-      open_cell(l+1, c);
+      open_cell(l - 1, c);
+      open_cell(l + 1, c);
+      open_cell(l, c - 1);
+      open_cell(l, c + 1);
 
-      if (field[l][c-1].isMine == 0)
-      open_cell(l, c-1);
-
-      if (field[l][c+1].isMine == 0)
-      open_cell(l, c+1);
-
-      //Abre células diagonais
-      if (field[l+1][c+1].isMine == 0)
-      open_cell(l+1, c+1);
-
-      if (field[l-1][c-1].isMine == 0)
-      open_cell(l-1, c-1);
-
-      if (field[l-1][c+1].isMine == 0)
-      open_cell(l-1, c+1);
-
-      if (field[l+1][c-1].isMine == 0)
-      open_cell(l+1, c-1);
+      open_cell(l + 1, c + 1);
+      open_cell(l - 1, c - 1);
+      open_cell(l + 1, c - 1);
+      open_cell(l - 1, c + 1);
     }
   }
-  //Agora o campo está aberto
-  field[l][c].isOpen==1;
 }
 
-void have_won()
+int have_won() {
+  int counter = 0;
+  for (l = 0; l < tam; l++)
+    for (c = 0; c < tam; c++) {
+      if (field[l][c].isOpen == 0 && field[l][c].isMine == 0)
+        counter++;
+    }
+  return counter; // se 0, n ganhou, se N, ganhou
+}
+
+void play()
 {
-  if (score == 920)
+  int line, column;
+
+  do
   {
-    printf(" Você obteve a pontuação máxima! Parabéns!!");
-    //Falta anexar a pontuação ao nome do jogador
-    return;
-  }
-}
+    system("clear");
+    print_field();
+    do
+    {
+      printf("\nDigite as coodernadas (linha e coluna)\n");
+      scanf("%d%d", &line, &column);
 
-void score_plus_one(int l, int c)
-{
-  if ((field[l][c].isMine == 0))
-     score += 10;
+      if (is_coor_valid(line, column) == 0 || field[line][column].isOpen == 1)
+        printf("\nCoordenada invalida, digite novamente\n");
+    } while (is_coor_valid(line, column) == 0 || field[line][column].isOpen == 1);
+
+    open_cell(line, column);
+  } while (have_won() != 0 && field[line][column].isMine == 0);
+  
+  if(field[line][column].isMine == 1)
+    printf("\n\nVoce perdeu :(\n");
+  else
+    printf("\nVoce ganhou!\n");
+
+  print_field();
 }
 
 int main(void)
@@ -209,45 +224,12 @@ int main(void)
   // Contar minas vizinhas da celula aberta
   count_neighbours();
   // Jogar
-  // play();
-  //   Mostrar campo
-  //   print_field();
-
-  //   Abrir celula
-     //open_cell(l, c);
-
-  //   Verificar se ganhou
-  // have_won();
-
-  //   Verificar se coordenada selecionada eh valida
-  // is_coor_valid(l, c);
+  play();
 
   //   Incrementar score
   // score_plus_one(l, c);
 
   // Salvar score em arquivo e encerrar o jogo (modulo)
   // end_game();
-
-  //Teste neighbours
-  for (l = 0; l < 10; l++)
-  {
-    for (c = 0; c < 10; c++)
-    {
-      printf("%d  ", field[l][c].neighbours);
-    }
-    printf("\n");
-  }
-
-  printf("\n");
-
-  //Teste bombas
-  for (l = 0; l < 10; l++)
-  {
-    for (c = 0; c < 10; c++)
-    {
-      printf("%d  ", field[l][c].isMine);
-    }
-    printf("\n");
-  }
   return 0;
 }
