@@ -196,7 +196,7 @@ void play()
       if (is_coor_valid(line, column) == 0)
         printf("\nCoordenada invalida, digite novamente...\n");
       if (field[line][column].isOpen == 1)
-        printf(" Você já escolheu esse campo! tente outro...")
+        printf(" Você já escolheu esse campo! tente outro...");
     } while (is_coor_valid(line, column) == 0 || field[line][column].isOpen == 1);
 
     open_cell(line, column);
