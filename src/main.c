@@ -9,17 +9,17 @@
   - [*] Checklist a respeito do desenvolvimento
 - [*] Struct celula
 - [*] Matriz campo
-- [ ] Menu
+- [*] Menu
 - [*] Iniciar campo
 - [*] Inserir minas
 - [*] Contar minas vizinhas
-- [ ] Jogar
+- [*] Jogar
   - [*] Mostrar campo
   - [*] Abrir celula
   - [*] Verificar se ganhou
   - [*] Verificar se coordenada e valida
-  - [ ] Incrementar o score
-- [ ] Salvar score e encerrar o jogo
+  - [X] Incrementar / salvar o score
+- [*] Encerrar o jogo
 
 */
 
@@ -55,6 +55,7 @@ int l, c, score;
 int n_players;
 struct Cell field[10][10]; // Matriz campo
 
+//Iniciar o jogo
 void start_game()
 {
   for (l = 0; l < tam; l++)
@@ -66,13 +67,14 @@ void start_game()
     }
 }
 
+//Posicionar minas
 void insert_mines(int number_of_bombs)
 {
   srand(time(NULL));
   for (int i = 0; i < number_of_bombs; i++)
   {
-    l = rand() % tam;
-    c = rand() % tam;
+    l = rand() % tam;//randomiza a linha
+    c = rand() % tam;//randomiza a coluna
     if (field[l][c].isMine == 0)
       field[l][c].isMine = 1;
     else
@@ -80,6 +82,7 @@ void insert_mines(int number_of_bombs)
   }
 }
 
+//Verificação da validade da coordenada
 int is_coor_valid(int l, int c)
 {
   if (l >= 0 && c >= 0 && l < tam && c < tam)
@@ -87,6 +90,7 @@ int is_coor_valid(int l, int c)
   return 0;
 }
 
+//Checagem de minas vizinhas de cada celula
 int mines_in_neighbourhood_of(int l, int c)
 {
   int mines_in_neighbourhood = 0;
@@ -114,6 +118,7 @@ int mines_in_neighbourhood_of(int l, int c)
   return mines_in_neighbourhood;
 }
 
+//Contagem das minas vizinahs à célula
 void count_neighbours()
 {
   for (l = 0; l < tam; l++)
@@ -121,6 +126,7 @@ void count_neighbours()
       field[l][c].neighbours = mines_in_neighbourhood_of(l, c);
 }
 
+//Checagem se o jogador ganhou
 int have_won()
 {
   int counter = 0;
@@ -133,6 +139,7 @@ int have_won()
   return counter; // se 0, n ganhou, se N, ganhou
 }
 
+//Imprimir campo
 void print_field(int print_mines)
 {
   {
@@ -166,6 +173,7 @@ void print_field(int print_mines)
   }
 }
 
+//Abertura da célula
 void open_cell(int l, int c)
 {
   if (is_coor_valid(l, c) && field[l][c].isOpen == 0)
@@ -187,6 +195,7 @@ void open_cell(int l, int c)
   }
 }
 
+//Jogar
 void play()
 {
   int line, column;
@@ -217,6 +226,7 @@ void play()
   print_field(1);
 }
 
+//Abrir o menu
 int open_menu()
 {
   int menu_choice;
@@ -233,6 +243,7 @@ int open_menu()
   return (menu_choice);
 }
 
+//Função que reproduz o jogo em si, executando as outras funções em //sua devida ordem
 int main(void)
 {
   struct Player players[n_players];
