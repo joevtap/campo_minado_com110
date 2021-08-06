@@ -52,8 +52,25 @@ struct Player
 
 int tam = 10;
 int l, c, score;
-int n_players = 3;
+int n_players;
 struct Cell field[10][10]; // Matriz campo
+
+int open_menu()
+{
+  int menu_choice;
+    do{
+      printf(" ==========CAMPO MINADO==========\n");
+      printf(" 1 - Jogar\n 2 - Ranking\n 3 - Créditos\n 4 - Sair\n");
+      printf(" ================================\n");
+      printf(" Digite uma opção: ");
+      scanf("%d ", &menu_choice);
+
+    if (menu_choice > 3 || menu_choice < 1)
+      printf(" Opção inválida! ");
+
+    } while (menu_choice > 3 || menu_choice < 1);
+  return (menu_choice);
+}
 
 void start_game()
 {
@@ -196,7 +213,7 @@ void play()
       if (is_coor_valid(line, column) == 0)
         printf("\nCoordenada invalida, digite novamente...\n");
       if (field[line][column].isOpen == 1)
-        printf(" Você já escolheu esse campo! tente outro...")
+        printf(" Você já escolheu esse campo! tente outro...");
     } while (is_coor_valid(line, column) == 0 || field[line][column].isOpen == 1);
 
     open_cell(line, column);
@@ -214,24 +231,46 @@ int main(void)
 {
   struct Player players[n_players];
 
-  // Menu (modulo)
-  // open_menu();
+  // Menu (modulo);
+  open_menu();
 
-  // Iniciar matriz do campo
-  start_game();
+  int menu_choice = open_menu();
+  switch (menu_choice)
+  {
+  case 1:
+    // Iniciar matriz do campo
+    start_game();
 
-  // Inserir N minas
-  insert_mines(10);
+    // Inserir N minas
+    insert_mines(10);
 
-  // Contar minas vizinhas da celula aberta
-  count_neighbours();
-  // Jogar
-  play();
+    // Contar minas vizinhas da celula aberta
+    count_neighbours();
+    // Jogar
+    play();
 
-  //   Incrementar score
-  // score_plus_one(l, c);
+    //   Incrementar score
+    // score_plus_one(l, c);
 
-  // Salvar score em arquivo e encerrar o jogo (modulo)
-  // end_game();
+    // Salvar score em arquivo e encerrar o jogo (modulo)
+    // end_game();
+    break;
+  
+  case 2:
+    //Adicionar ranking
+    break;
+
+  case 3:
+    printf("\n Joel Vitor Torres\n Samuel Canellas Ferreira\n Ryan Augusto Ribeiro Silva\n\n");
+    break;
+
+  case 4:
+    ("\nVocê escolheu sair! Até mais!");
+    break;
+
+  default:
+    printf(" Erro: opção inválida! ");
+    break;
+  }
   return 0;
 }
