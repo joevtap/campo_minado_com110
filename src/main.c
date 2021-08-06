@@ -55,23 +55,6 @@ int l, c, score;
 int n_players;
 struct Cell field[10][10]; // Matriz campo
 
-int open_menu()
-{
-  int menu_choice;
-    do{
-      printf(" ==========CAMPO MINADO==========\n");
-      printf(" 1 - Jogar\n 2 - Ranking\n 3 - Créditos\n 4 - Sair\n");
-      printf(" ================================\n");
-      printf(" Digite uma opção: ");
-      scanf("%d ", &menu_choice);
-
-    if (menu_choice > 3 || menu_choice < 1)
-      printf(" Opção inválida! ");
-
-    } while (menu_choice > 3 || menu_choice < 1);
-  return (menu_choice);
-}
-
 void start_game()
 {
   for (l = 0; l < tam; l++)
@@ -234,50 +217,74 @@ void play()
   print_field(1);
 }
 
+int open_menu()
+{
+  int menu_choice;
+
+  do
+  {
+    system("clear");
+    printf(" ==========CAMPO MINADO==========\n");
+    printf(" 1 - Jogar\n 2 - Ranking\n 3 - Créditos\n 4 - Sair\n");
+    printf(" ================================\n");
+    printf(" Digite uma opção: ");
+    scanf("\n%d", &menu_choice);
+  } while (!(menu_choice > 0 && menu_choice <= 4));
+  return (menu_choice);
+}
+
 int main(void)
 {
   struct Player players[n_players];
+  int goback;
 
-  // Menu (modulo);
-  open_menu();
+  do {
+    // Menu (modulo);
+    int menu_choice = open_menu();
 
-  int menu_choice = open_menu();
-  switch (menu_choice)
-  {
-  case 1:
-    // Iniciar matriz do campo
-    start_game();
+    switch (menu_choice)
+    {
+    case 1:
+      // Iniciar matriz do campo
+      start_game();
 
-    // Inserir N minas
-    insert_mines(10);
+      // Inserir N minas
+      insert_mines(10);
 
-    // Contar minas vizinhas da celula aberta
-    count_neighbours();
-    // Jogar
-    play();
+      // Contar minas vizinhas da celula aberta
+      count_neighbours();
+      // Jogar
+      play();
 
-    //   Incrementar score
-    // score_plus_one(l, c);
+      //   Incrementar score
+      // score_plus_one(l, c);
 
-    // Salvar score em arquivo e encerrar o jogo (modulo)
-    // end_game();
-    break;
-  
-  case 2:
-    //Adicionar ranking
-    break;
+      // Salvar score em arquivo e encerrar o jogo (modulo)
+      // end_game();
+      break;
 
-  case 3:
-    printf("\n Joel Vitor Torres\n Samuel Canellas Ferreira\n Ryan Augusto Ribeiro Silva\n\n");
-    break;
+    case 2:
+      system("clear");
+      //Adicionar ranking
+      printf("\nVoltar? (1: Sim | 2: Nao)\n");
+      scanf("%d", &goback);
+      break;
 
-  case 4:
-    ("\nVocê escolheu sair! Até mais!");
-    break;
+    case 3:
+      system("clear");
+      printf("\n Joel Vitor Torres\n Samuel Canellas Ferreira\n Ryan Augusto Ribeiro Silva\n");
+      printf("\nVoltar? (1: Sim | 2: Nao)\n");
+      scanf("%d", &goback);
 
-  default:
-    printf(" Erro: opção inválida! ");
-    break;
-  }
+    case 4:
+      ("\nVocê escolheu sair! Até mais!");
+      break;
+
+    default:
+      printf(" Erro: opção inválida! ");
+      break;
+    }
+  } while (goback == 1);
+
   return 0;
 }
