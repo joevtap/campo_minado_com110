@@ -44,7 +44,7 @@ struct Cell
 
 struct Player
 {
-  int id;
+  char *name;
   int score;
 };
 
@@ -187,15 +187,13 @@ void open_cell(int l, int c)
   }
 }
 
-void play(int id, int have_won_counter)
+void play()
 {
   int line, column;
-  
 
   do
   {
     system("clear");
-    printf("Voce e o jogador %d", id);
     print_field(0);
     do
     {
@@ -213,10 +211,8 @@ void play(int id, int have_won_counter)
 
   if (field[line][column].isMine == 1)
     printf("\n\nVoce perdeu :(\n");
-  else {
+  else
     printf("\nVoce ganhou!\n");
-    have_won_counter++;
-  }
 
   print_field(1);
 }
@@ -239,67 +235,11 @@ int open_menu()
 
 int main(void)
 {
+  struct Player players[n_players];
   int goback;
 
-  // Pontuacao e ranqueamento
-
-  struct Player players[50];
-  struct Player player;
-  int ids[50], new_id, counter = 0, i, have_won_counter = 0;
-
-  FILE *fp;
-
-  fp = fopen("./id.txt", "r");
-  fscanf(fp, "%d", &new_id);
-  player.id = new_id + 1;
-  fclose(fp);
-
-  fp = fopen("./id.txt", "w");
-  fprintf(fp, "%d\n", player.id);
-  fclose(fp);
-
-  fp = fopen("./scores.txt", "r");
-
-  fscanf(fp, "%d", &i);
-  while (!feof(fp))
+  do
   {
-    players[counter].score = i;
-    fscanf(fp, "%d", &i);
-    counter++;
-  }
-  counter = 0;
-
-  fclose(fp);
-
-  fp = fopen("players.txt", "r");
-
-  fscanf(fp, "%d", &i);
-  while (!feof(fp))
-  {
-    players[counter].id = i;
-    fscanf(fp, "%d", &i);
-    counter++;
-  }
-  counter = 0;
-
-  fclose(fp);
-
-  for (int i = 0; i < 50; i++)
-    for (int j = i + 1; j < 50; j++)
-    {
-      if (players[i].score < players[j].score)
-      {
-        struct Player temp = players[i];
-        players[i] = players[j];
-        players[j] = temp;
-      }
-    }
-
-  fp = fopen("players.txt", "a");
-  fprintf(fp, "%d\n", player.id);
-  fclose(fp);
-
-  do {
     // Menu (modulo);
     int menu_choice = open_menu();
 
@@ -315,7 +255,7 @@ int main(void)
       // Contar minas vizinhas da celula aberta
       count_neighbours();
       // Jogar
-      play(player.id, have_won_counter);
+      play();
 
       //   Incrementar score
       // score_plus_one(l, c);
