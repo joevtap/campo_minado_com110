@@ -1,2 +1,9 @@
-*.out
-*.pdf
+*
+
+!.gitignore
+!LICENSE
+!README.MD
+!main.c
+!*.c
+!*/
+
