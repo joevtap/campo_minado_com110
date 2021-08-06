@@ -138,31 +138,48 @@ void count_neighbours()
       field[l][c].neighbours = mines_in_neighbourhood_of(l, c);
 }
 
-void print_field()
+int have_won()
 {
-  printf("\n\n   ");
+  int counter = 0;
   for (l = 0; l < tam; l++)
-  {
-    printf("  %d ", l); // colunas
-  }
-  printf("\n   -----------------------------------------\n");
-  for (int l = 0; l < tam; l++)
-  {
-    printf("%d  |", l);
-    for (int c = 0; c < tam; c++)
+    for (c = 0; c < tam; c++)
     {
-      if (field[l][c].isOpen)
-      {
-        if (field[l][c].isMine)
-          printf(" * ");
-        else
-          printf(" %d ", field[l][c].neighbours);
-      }
-      else
-        printf("   ");
-      printf("|");
+      if (field[l][c].isOpen == 0 && field[l][c].isMine == 0)
+        counter++;
+    }
+  return counter; // se 0, n ganhou, se N, ganhou
+}
+
+void print_field(int print_mines)
+{
+  {
+    printf("\n\n   ");
+    for (l = 0; l < tam; l++)
+    {
+      printf("  %d ", l); // colunas
     }
     printf("\n   -----------------------------------------\n");
+    for (int l = 0; l < tam; l++)
+    {
+      printf("%d  |", l);
+      for (int c = 0; c < tam; c++)
+      {
+        if (field[l][c].isOpen || print_mines == 1)
+        {
+          if (field[l][c].isMine)
+            printf(" * ");
+          else
+            printf(" %d ", field[l][c].neighbours);
+        }
+        else
+        {
+          printf("   ");
+        }
+
+        printf("|");
+      }
+      printf("\n   -----------------------------------------\n");
+    }
   }
 }
 
@@ -187,16 +204,6 @@ void open_cell(int l, int c)
   }
 }
 
-int have_won() {
-  int counter = 0;
-  for (l = 0; l < tam; l++)
-    for (c = 0; c < tam; c++) {
-      if (field[l][c].isOpen == 0 && field[l][c].isMine == 0)
-        counter++;
-    }
-  return counter; // se 0, n ganhou, se N, ganhou
-}
-
 void play()
 {
   int line, column;
@@ -204,7 +211,7 @@ void play()
   do
   {
     system("clear");
-    print_field();
+    print_field(0);
     do
     {
       printf("\nDigite as coodernadas (linha e coluna)\n");
@@ -218,13 +225,13 @@ void play()
 
     open_cell(line, column);
   } while (have_won() != 0 && field[line][column].isMine == 0);
-  
-  if(field[line][column].isMine == 1)
+
+  if (field[line][column].isMine == 1)
     printf("\n\nVoce perdeu :(\n");
   else
     printf("\nVoce ganhou!\n");
 
-  print_field();
+  print_field(1);
 }
 
 int main(void)
