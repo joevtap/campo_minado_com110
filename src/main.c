@@ -222,8 +222,16 @@ void play()
     printf("\n\nVoce perdeu :(\n");
   else
     printf("\nVoce ganhou!\n");
+  
+  
 
   print_field(1);
+
+  printf("Deseja jogar novamente? [Sim = 1, Não = 2]\n");
+  int play_again;
+  scanf("%d", &play_again);
+
+  
 }
 
 //Abrir o menu
