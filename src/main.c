@@ -18,7 +18,7 @@
   - [*] Abrir celula
   - [*] Verificar se ganhou
   - [*] Verificar se coordenada e valida
-  - [X] Incrementar / salvar o score
+  - [ ] Incrementar / salvar o score (nao foi possivel)
 - [*] Encerrar o jogo
 
 */
@@ -28,8 +28,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// #include "modules/save.h"
-// #include "modules/menu.h"
 
 // Struct celula
 
@@ -38,14 +36,6 @@ struct Cell
   int isMine;     // E uma mina?
   int isOpen;     // Celula esta aberta?
   int neighbours; // Quantos vizinhos tem minas?
-};
-
-// Struct jogador
-
-struct Player
-{
-  char *name;
-  int score;
 };
 
 // Variaveis globais
@@ -176,7 +166,7 @@ void print_field(int print_mines)
 //Abertura da célula
 void open_cell(int l, int c)
 {
-  if (is_coor_valid(l, c) && field[l][c].isOpen == 0)
+  if (is_coor_valid(l, c) == 1 && field[l][c].isOpen == 0)
   {
     field[l][c].isOpen = 1;
 
@@ -211,8 +201,8 @@ void play()
 
       if (is_coor_valid(line, column) == 0)
         printf("\nCoordenada invalida, digite novamente...\n");
-      if (field[line][column].isOpen == 1)
-        printf(" Você já escolheu esse campo! tente outro...");
+      else if (field[line][column].isOpen == 1)
+        printf(" Você já escolheu esse campo! Tente outro...");
     } while (is_coor_valid(line, column) == 0 || field[line][column].isOpen == 1);
 
     open_cell(line, column);
@@ -222,16 +212,8 @@ void play()
     printf("\n\nVoce perdeu :(\n");
   else
     printf("\nVoce ganhou!\n");
-  
-  
 
   print_field(1);
-
-  printf("Deseja jogar novamente? [Sim = 1, Não = 2]\n");
-  int play_again;
-  scanf("%d", &play_again);
-
-  
 }
 
 //Abrir o menu
@@ -243,18 +225,17 @@ int open_menu()
   {
     system("clear");
     printf(" ==========CAMPO MINADO==========\n");
-    printf(" 1 - Jogar\n 2 - Ranking\n 3 - Créditos\n 4 - Sair\n");
+    printf(" 1 - Jogar\n 2 - Créditos\n 3 - Sair\n");
     printf(" ================================\n");
     printf(" Digite uma opção: ");
     scanf("\n%d", &menu_choice);
-  } while (!(menu_choice > 0 && menu_choice <= 4));
+  } while (!(menu_choice > 0 && menu_choice <= 3));
   return (menu_choice);
 }
 
 //Função que reproduz o jogo em si, executando as outras funções em //sua devida ordem
 int main(void)
 {
-  struct Player players[n_players];
   int goback;
 
   do
@@ -275,29 +256,17 @@ int main(void)
       count_neighbours();
       // Jogar
       play();
-
-      //   Incrementar score
-      // score_plus_one(l, c);
-
-      // Salvar score em arquivo e encerrar o jogo (modulo)
-      // end_game();
       break;
 
     case 2:
-      system("clear");
-      //Adicionar ranking
-      printf("\nVoltar? (1: Sim | 2: Nao)\n");
-      scanf("%d", &goback);
-      break;
-
-    case 3:
       system("clear");
       printf("\n Joel Vitor Torres\n Samuel Canellas Ferreira\n Ryan Augusto Ribeiro Silva\n");
       printf("\nVoltar? (1: Sim | 2: Nao)\n");
       scanf("%d", &goback);
 
-    case 4:
-      ("\nVocê escolheu sair! Até mais!");
+    case 3:
+      printf("\nVocê escolheu sair! Até mais!\n");
+      system("exit");
       break;
 
     default:
